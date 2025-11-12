@@ -1,4 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+
+const getPreviewBodyFontSize = (bodyFontSize) => {
+  const exportPx = Math.max(40, Math.round((bodyFontSize || 52) * 3.5))
+  return Math.max(14, Math.round(exportPx * (360 / 1080)))
+}
 
 const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange, useGradientText = false, onUseGradientTextChange }) => {
   const handleTextChange = (field, value) => {
@@ -7,6 +12,8 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
       [field]: value
     })
   }
+
+  const previewBodyFontPx = useMemo(() => getPreviewBodyFontSize(bodyFontSize), [bodyFontSize])
 
   const commonTags = [
     '探店vlog', '好物分享', '生活记录', '美食日记',
@@ -250,7 +257,7 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
               <p className="text-xs font-medium text-gray-600 mb-2">预览效果：</p>
               <div 
                 className="text-center font-semibold text-gray-800 transition-all duration-300"
-                style={{ fontSize: `${Math.min(bodyFontSize * 0.4, 24)}px` }}
+                style={{ fontSize: `${previewBodyFontPx}px`, lineHeight: 1.35 }}
               >
                 这是字体大小预览
               </div>

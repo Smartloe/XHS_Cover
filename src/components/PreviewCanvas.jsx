@@ -1,7 +1,18 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import Draggable from 'react-draggable'
 import { X } from 'lucide-react'
 import Highlighter from 'react-highlight-words'
+
+const PREVIEW_SIZE = { width: 360, height: 480 }
+const EXPORT_SIZE = { width: 1080, height: 1440 }
+const BODY_FONT_SCALE = 3.5
+const SCALE_RATIO = PREVIEW_SIZE.width / EXPORT_SIZE.width
+
+const getBodyFontMetrics = (bodyFontSize) => {
+  const base = Math.max(40, Math.round((bodyFontSize || 52) * BODY_FONT_SCALE))
+  const preview = Math.max(14, Math.round(base * SCALE_RATIO))
+  return { exportPx: base, previewPx: preview }
+}
 
 const PreviewCanvas = ({
   template,
@@ -126,6 +137,15 @@ const PreviewCanvas = ({
   }
 
   const themeColors = getThemeColors(colorTheme)
+  const { exportPx: exportBodyFontPx, previewPx: previewBodyFontPx } = useMemo(
+    () => getBodyFontMetrics(bodyFontSize),
+    [bodyFontSize]
+  )
+  const exportHighlightPad = Math.max(24, Math.round(exportBodyFontPx * 0.15))
+  const highlightPaddingX = Math.max(8, Math.round(exportHighlightPad * SCALE_RATIO))
+  const highlightPaddingY = Math.max(3, Math.round(previewBodyFontPx * 0.25))
+  const highlightRadius = Math.max(12, Math.round(exportBodyFontPx * 0.3 * SCALE_RATIO))
+  const highlightBorder = Math.max(2, Math.round(exportBodyFontPx * 0.06 * SCALE_RATIO))
 
   const handleEmojiDrag = (id, e, data) => {
     onEmojiUpdate(id, { x: data.x, y: data.y })
@@ -150,7 +170,10 @@ const PreviewCanvas = ({
       </div>
 
       {/* 预览画布容器 - 重新设计布局 */}
-      <div className="relative mx-auto bg-white rounded-2xl shadow-lg overflow-hidden" style={{ width: '360px', height: '480px' }}>
+      <div
+        className="relative mx-auto bg-white rounded-2xl shadow-lg overflow-hidden"
+        style={{ width: `${PREVIEW_SIZE.width}px`, height: `${PREVIEW_SIZE.height}px` }}
+      >
         <div
           ref={canvasRef}
           className="relative w-full h-full"
@@ -222,43 +245,43 @@ const PreviewCanvas = ({
             <div
               className="text-center leading-relaxed"
               style={{ 
-                color: themeColors.primary, 
-                fontSize: `${Math.max(12, Math.min(bodyFontSize * 0.5, 24))}px`, 
-                lineHeight: 1.5 
+                color: themeColors.primary,
+                fontSize: `${previewBodyFontPx}px`,
+                lineHeight: 1.5
               }}
             >
               <Highlighter
                 searchWords={highlightWords}
                 autoEscape={true}
                 textToHighlight={textContent.body}
-                highlightStyle={useGradientText ? {
-                  // 渐变荧光笔效果 - 圆角预览版
-                  position: 'relative',
-                  display: 'inline-block',
-                  padding: '3px 8px',
-                  margin: '0 2px',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #FF6B9C 0%, #FF8E53 25%, #FFD166 50%, #4ECDC4 75%, #A78BFA 100%)',
-                  color: '#FFFFFF',
-                  fontWeight: '700',
-                  textShadow: '0 1px 2px rgba(0,0,0,0.4)',
-                  boxShadow: '0 3px 8px rgba(255,107,156,0.4), inset 0 1px 0 rgba(255,255,255,0.3)',
-                  transform: 'translateY(-1px)',
-                  border: '1px solid rgba(255,255,255,0.3)'
-                } : {
-                  // 经典荧光笔效果 - 圆角预览版
-                  position: 'relative',
-                  display: 'inline-block',
-                  padding: '3px 8px',
-                  margin: '0 2px',
-                  borderRadius: '10px',
-                  background: 'linear-gradient(120deg, rgba(255,235,59,0.95) 0%, rgba(255,245,59,0.8) 50%, rgba(255,235,59,0.95) 100%)',
-                  color: '#1A202C',
-                  fontWeight: '700',
-                  boxShadow: '0 3px 6px rgba(255,193,7,0.4), inset 0 1px 0 rgba(255,255,255,0.6)',
-                  borderBottom: '2px solid rgba(255,193,7,0.7)',
-                  textShadow: '0 1px 1px rgba(255,255,255,0.7)'
-                }}
+                highlightStyle={useGradientText
+                  ? {
+                      position: 'relative',
+                      display: 'inline-block',
+                      padding: `${highlightPaddingY}px ${highlightPaddingX}px`,
+                      margin: '0 4px',
+                      borderRadius: `${highlightRadius}px`,
+                      background: 'linear-gradient(135deg, #FF6B9C 0%, #FF8E53 25%, #FFD166 50%, #4ECDC4 75%, #A78BFA 100%)',
+                      color: '#FFFFFF',
+                      fontWeight: 700,
+                      textShadow: '0 1px 2px rgba(0,0,0,0.4)',
+                      boxShadow: '0 3px 8px rgba(255,107,156,0.35), inset 0 1px 0 rgba(255,255,255,0.3)',
+                      transform: 'translateY(-1px)',
+                      border: '1px solid rgba(255,255,255,0.25)',
+                    }
+                  : {
+                      position: 'relative',
+                      display: 'inline-block',
+                      padding: `${highlightPaddingY}px ${highlightPaddingX}px`,
+                      margin: '0 4px',
+                      borderRadius: `${highlightRadius}px`,
+                      background: 'linear-gradient(120deg, rgba(255,235,59,0.95) 0%, rgba(255,245,59,0.85) 50%, rgba(255,235,59,0.95) 100%)',
+                      color: '#1A202C',
+                      fontWeight: 700,
+                      boxShadow: '0 3px 6px rgba(255,193,7,0.35), inset 0 1px 0 rgba(255,255,255,0.6)',
+                      borderBottom: `${highlightBorder}px solid rgba(255,193,7,0.7)`,
+                      textShadow: '0 1px 1px rgba(255,255,255,0.7)',
+                    }}
               />
             </div>
           </div>
