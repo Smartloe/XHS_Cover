@@ -1,4 +1,172 @@
-# 小红书封面生成器 - 开发与使用指南
+# 小红书封面生成器 (XHS Cover Generator)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18.2.0-blue.svg)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4.11-green.svg)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.4-teal.svg)](https://tailwindcss.com/)
+
+🎨 专业级小红书封面设计工具，让你的内容在社交平台上脱颖而出！
+
+## ✨ 功能特色
+
+### 🎯 核心功能
+- **智能模板系统** - 7种专业设计模板，涵盖空白、横线、网格等笔记本风格
+- **多层文本编辑** - 支持标题、高亮关键词、正文内容、标签的完整文本编辑
+- **动态配色方案** - 7种预设主题色 + 自定义背景颜色，完美匹配不同内容风格
+- **互动贴纸系统** - 100+ Emoji贴纸，支持拖拽、缩放、旋转等精细操作
+- **实时预览** - 360×480高清预览，所见即所得的设计体验
+- **高清导出** - 一键导出1080×1440 PNG图片，完美适配小红书封面尺寸
+
+### 🎨 设计亮点
+- **渐变文字效果** - 五彩渐变文字，让标题更加吸睛
+- **圆角高亮** - 现代化的圆角高亮设计，视觉更舒适
+- **手绘质感** - 模拟真实笔记本的纹理效果
+- **光影效果** - 精心设计的阴影和发光效果
+
+### 🚀 用户体验
+- **响应式设计** - 完美适配桌面端
+- **实时保存** - 自动保存设计状态，防止意外丢失
+- **键盘快捷键** - Delete键快速删除选中贴纸
+- **流畅交互** - 流畅的拖拽和变换操作
+
+## 🖥️ 技术栈
+
+### 前端技术
+- **React 18.2.0** - 现代化的用户界面库
+- **Vite 5.4.11** - 极速的开发构建工具
+- **TailwindCSS 3.4.4** - 实用优先的CSS框架
+- **Radix UI** - 无障碍友好的UI组件库
+- **Framer Motion** - 流畅的动画效果
+
+### 核心功能库
+- **react-draggable** - 拖拽交互支持
+- **react-color** - 高级颜色选择器
+- **html-to-image** - Canvas图片导出
+- **react-highlight-words** - 文本高亮处理
+
+## 🚀 快速开始
+
+### 环境要求
+- Node.js ≥ 18.0.0
+- npm ≥ 10.0.0
+- 现代浏览器（支持ES2020+和Canvas API）
+
+### 安装运行
+
+```bash
+# 克隆项目
+git clone https://github.com/Smartloe/XHS_Cover.git
+cd XHS_Cover
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+开发服务器将在 `http://localhost:8080` 启动。
+
+### 生产构建
+
+```bash
+# 构建生产版本
+npm run build
+
+# 预览生产版本
+npm run preview
+```
+
+## 📋 使用指南
+
+### 1. 选择模板
+从7种专业模板中选择适合你内容风格的背景：
+- 空白模板 - 纯色背景，自由发挥
+- 横线模板 - 笔记本横线效果
+- 网格模板 - 笔记本网格效果
+
+### 2. 编辑文案
+- **标题** - 设置吸引眼球的主标题
+- **高亮词** - 突出显示关键词
+- **正文** - 添加详细内容描述
+- **标签** - 添加话题标签
+
+### 3. 调整配色
+- 选择7种预设主题色之一
+- 自定义背景颜色
+- 开启/关闭渐变文字效果
+
+### 4. 添加贴纸
+- 从100+ Emoji中选择
+- 拖拽调整位置
+- 缩放和旋转控制
+- 键盘快捷键操作
+
+### 5. 导出封面
+- 一键导出高清PNG图片
+- 1080×1440完美尺寸
+- 保持所有设计效果
+
+## 🎯 使用场景
+
+### 个人用户
+- **生活方式分享** - 旅行、美食、时尚等内容
+- **学习笔记** - 读书笔记、学习心得分享
+- **产品推荐** - 好物分享、使用体验
+
+### 商业用户
+- **品牌宣传** - 产品推广、活动宣传
+- **内容营销** - 教育内容、行业资讯
+- **社交媒体** - 多平台内容适配
+
+## 📸 截图预览
+
+![小红书封面生成器界面](https://github.com/Smartloe/XHS_Cover/blob/main/screenshots/main-interface.png)
+*主界面展示*
+
+![实时预览效果](https://github.com/Smartloe/XHS_Cover/blob/main/screenshots/preview-demo.png)
+*实时预览效果*
+
+![导出结果示例](https://github.com/Smartloe/XHS_Cover/blob/main/screenshots/export-example.png)
+*导出结果示例*
+
+## 🤝 贡献指南
+
+我们欢迎社区的贡献！请遵循以下步骤：
+
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
+
+### 开发规范
+- 使用 ESLint 进行代码检查
+- 保持代码风格一致性
+- 添加适当的注释和文档
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+
+## 🙏 致谢
+
+- [React](https://reactjs.org/) - 构建用户界面的 JavaScript 库
+- [Vite](https://vitejs.dev/) - 下一代前端构建工具
+- [TailwindCSS](https://tailwindcss.com/) - 实用优先的CSS框架
+- [Radix UI](https://www.radix-ui.com/) - 无障碍UI组件库
+
+## 📞 联系方式
+
+- 项目地址: [https://github.com/Smartloe/XHS_Cover](https://github.com/Smartloe/XHS_Cover)
+- 问题反馈: [Issues](https://github.com/Smartloe/XHS_Cover/issues)
+- 功能建议: [Discussions](https://github.com/Smartloe/XHS_Cover/discussions)
+
+---
+
+⭐ 如果这个项目对你有帮助，请给它一个星标！
+
+Made with ❤️ for the 小红书社区# 小红书封面生成器 - 开发与使用指南
 
 ## 环境要求
 - Node.js ≥ 18（项目中已声明约束，见 package.json "engines"）
