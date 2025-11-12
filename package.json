@@ -12,7 +12,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "gh-pages -d build"
+    "deploy": "PUBLIC_PATH=/XHS_Cover npm run build && gh-pages -d build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
