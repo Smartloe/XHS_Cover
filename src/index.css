@@ -78,20 +78,12 @@
 @layer utilities {
   /* 整页柔和渐变背景（小清新） */
   .fresh-bg {
-    background-color: #F7FAFC;
-    background-image:
-      radial-gradient(1200px 800px at 10% -10%, rgba(209, 250, 229, 0.6), transparent 60%),
-      radial-gradient(1200px 800px at 100% 0%, rgba(236, 254, 255, 0.6), transparent 60%),
-      radial-gradient(700px 500px at 50% 100%, rgba(254, 243, 199, 0.5), transparent 60%),
-      linear-gradient(180deg, #FDFCFB 0%, #F7FAFC 100%);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: #f8fafc;
   }
 
   /* 玻璃拟态卡片（柔和阴影与边框） */
   .soft-card {
-    @apply bg-white/80 backdrop-blur rounded-2xl shadow-lg border border-white/60;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
   }
 
   /* 渐变标题（淡彩） */

@@ -1,11 +1,26 @@
 import React, { useMemo } from 'react'
+import { BODY_FONT_SCALE, DEFAULT_BODY_FONT_SIZE, MIN_BODY_FONT_SIZE, MAX_BODY_FONT_SIZE } from '@/lib/design-tokens.js'
+
+const PREVIEW_RATIO = 360 / 1080
 
 const getPreviewBodyFontSize = (bodyFontSize) => {
-  const exportPx = Math.max(40, Math.round((bodyFontSize || 52) * 3.5))
-  return Math.max(14, Math.round(exportPx * (360 / 1080)))
+  const exportPx = Math.max(40, Math.round((bodyFontSize || DEFAULT_BODY_FONT_SIZE) * BODY_FONT_SCALE))
+  return Math.max(14, Math.round(exportPx * PREVIEW_RATIO))
 }
 
-const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange, useGradientText = false, onUseGradientTextChange }) => {
+const clampFontSize = (value) => {
+  if (Number.isNaN(value)) return DEFAULT_BODY_FONT_SIZE
+  return Math.min(MAX_BODY_FONT_SIZE, Math.max(MIN_BODY_FONT_SIZE, value))
+}
+
+const TextEditor = ({
+  content,
+  onChange,
+  bodyFontSize = DEFAULT_BODY_FONT_SIZE,
+  onBodyFontSizeChange,
+  useGradientText = false,
+  onUseGradientTextChange
+}) => {
   const handleTextChange = (field, value) => {
     onChange({
       ...content,
@@ -14,6 +29,18 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
   }
 
   const previewBodyFontPx = useMemo(() => getPreviewBodyFontSize(bodyFontSize), [bodyFontSize])
+  const sliderProgress = Math.min(
+    100,
+    Math.max(
+      0,
+      ((bodyFontSize - MIN_BODY_FONT_SIZE) / (MAX_BODY_FONT_SIZE - MIN_BODY_FONT_SIZE)) * 100
+    )
+  )
+
+  const handleFontSizeChange = (value) => {
+    const next = clampFontSize(value)
+    onBodyFontSizeChange?.(next)
+  }
 
   const commonTags = [
     '探店vlog', '好物分享', '生活记录', '美食日记',
@@ -202,29 +229,29 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
               {bodyFontSize}px
             </span>
           </label>
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-200">
+          <div className="rounded-xl border border-gray-200 p-5 bg-white">
             <div className="flex items-center gap-4 mb-4">
               <span className="text-sm font-medium text-gray-600 min-w-[40px]">小</span>
               <input
                 type="range"
-                min="32"
-                max="80"
+                min={MIN_BODY_FONT_SIZE}
+                max={MAX_BODY_FONT_SIZE}
                 step="2"
                 value={bodyFontSize}
-                onChange={(e) => onBodyFontSizeChange?.(parseInt(e.target.value, 10))}
+                onChange={(e) => handleFontSizeChange(parseInt(e.target.value, 10))}
                 className="flex-1 h-3 bg-gradient-to-r from-purple-200 to-pink-200 rounded-lg appearance-none cursor-pointer hover:shadow-md transition-all duration-200"
                 style={{
-                  background: `linear-gradient(to right, #E879F9 0%, #F472B6 ${((bodyFontSize - 32) / 48) * 100}%, #E5E7EB ${((bodyFontSize - 32) / 48) * 100}%, #E5E7EB 100%)`
+                  background: `linear-gradient(to right, #E879F9 0%, #F472B6 ${sliderProgress}%, #E5E7EB ${sliderProgress}%, #E5E7EB 100%)`
                 }}
               />
               <span className="text-sm font-medium text-gray-600 min-w-[40px] text-right">大</span>
               <input
                 type="number"
-                min="32"
-                max="80"
+                min={MIN_BODY_FONT_SIZE}
+                max={MAX_BODY_FONT_SIZE}
                 step="2"
                 value={bodyFontSize}
-                onChange={(e) => onBodyFontSizeChange?.(parseInt(e.target.value, 10))}
+                onChange={(e) => handleFontSizeChange(parseInt(e.target.value, 10))}
                 className="w-20 px-3 py-2 text-center bg-white border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 font-semibold transition-all duration-200"
               />
             </div>
@@ -232,11 +259,11 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
             {/* 快捷尺寸按钮 */}
             <div className="grid grid-cols-4 gap-2 mb-3">
               {[
-                { size: 48, label: '小', desc: '精致' },
-                { size: 56, label: '中', desc: '标准' },
-                { size: 64, label: '大', desc: '醒目' },
-                { size: 72, label: '特大', desc: '突出' }
-              ].map(({ size, label, desc }) => (
+                { size: 36, label: '小' },
+                { size: 44, label: '标准' },
+                { size: 52, label: '大' },
+                { size: 60, label: '特大' }
+              ].map(({ size, label }) => (
                 <button
                   key={size}
                   className={`px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 ${
@@ -244,7 +271,7 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
                       ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white shadow-lg transform scale-105'
                       : 'bg-white text-gray-600 hover:bg-purple-50 border border-purple-200 hover:border-purple-300'
                   }`}
-                  onClick={() => onBodyFontSizeChange?.(size)}
+                  onClick={() => handleFontSizeChange(size)}
                 >
                   <div className="text-xs font-bold">{label}</div>
                   <div className="text-xs opacity-75">{size}px</div>
@@ -265,7 +292,7 @@ const TextEditor = ({ content, onChange, bodyFontSize = 52, onBodyFontSizeChange
             
             <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
               <span className="w-1 h-1 bg-purple-400 rounded-full"></span>
-              推荐：标准56px，醒目64px，突出72px
+              推荐：日常 44px，强调 52px，突出 60px
             </p>
           </div>
         </div>

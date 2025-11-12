@@ -5,6 +5,7 @@ import ColorPanel from '../components/ColorPanel.jsx'
 import EmojiPanel from '../components/EmojiPanel.jsx'
 import PreviewCanvas from '../components/PreviewCanvas.jsx'
 import ExportButton from '../components/ExportButton.jsx'
+import { DEFAULT_BODY_FONT_SIZE } from '@/lib/design-tokens.js'
 
 const Index = () => {
   const [selectedTemplate, setSelectedTemplate] = useState(null)
@@ -18,7 +19,7 @@ const Index = () => {
   const [colorTheme, setColorTheme] = useState('morandi')
   const [backgroundColor, setBackgroundColor] = useState('#F8F5F2')
   const [emojis, setEmojis] = useState([])
-  const [bodyFontSize, setBodyFontSize] = useState(52)
+  const [bodyFontSize, setBodyFontSize] = useState(DEFAULT_BODY_FONT_SIZE)
   const [selectedEmojiId, setSelectedEmojiId] = useState(null)
   const [useGradientText, setUseGradientText] = useState(false)
 
@@ -90,135 +91,31 @@ const Index = () => {
   return (
     <div className="min-h-screen fresh-bg">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
-        {/* 头部标题区域 - 重新设计 */}
-        <div className="text-center mb-12 fade-in">
-          <div className="relative inline-block mb-6">
-            <h1 className="soft-title text-5xl md:text-6xl font-black mb-2 tracking-tight leading-tight">
-              小红书封面生成器
-            </h1>
-            <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400/30 via-teal-400/30 to-cyan-400/30 rounded-2xl blur-xl -z-10 animate-pulse"></div>
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/10 via-teal-400/10 to-cyan-400/10 rounded-xl -z-10"></div>
-          </div>
-          
-          <p className="text-gray-700 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8 font-medium">
-            🎨 专业级封面设计工具，让你的内容脱颖而出
+        <header className="mb-12 text-center space-y-3">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-400">XHS Cover</p>
+          <h1 className="text-3xl font-semibold text-gray-900">小红书封面生成器</h1>
+          <p className="text-sm text-gray-600 max-w-2xl mx-auto">
+            精选模板、文案编辑、色彩与贴纸都集中在一处，几分钟内导出 1080×1440 PNG 封面。
           </p>
-          
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-800 rounded-full text-sm font-semibold border border-emerald-200 shadow-sm">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              AI智能设计
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 rounded-full text-sm font-semibold border border-blue-200 shadow-sm">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-              实时预览
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-purple-50 text-purple-800 rounded-full text-sm font-semibold border border-purple-200 shadow-sm">
-              <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
-              一键导出
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-100 to-pink-50 text-pink-800 rounded-full text-sm font-semibold border border-pink-200 shadow-sm">
-              <span className="w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
-              高清输出
-            </div>
-          </div>
-          
-          {/* 统计数据展示 */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            <div className="text-center p-3 bg-white/60 backdrop-blur rounded-xl border border-white/80">
-              <div className="text-2xl font-bold text-emerald-600">10+</div>
-              <div className="text-xs text-gray-600 font-medium">精美模板</div>
-            </div>
-            <div className="text-center p-3 bg-white/60 backdrop-blur rounded-xl border border-white/80">
-              <div className="text-2xl font-bold text-blue-600">100+</div>
-              <div className="text-xs text-gray-600 font-medium">表情贴纸</div>
-            </div>
-            <div className="text-center p-3 bg-white/60 backdrop-blur rounded-xl border border-white/80">
-              <div className="text-2xl font-bold text-purple-600">7</div>
-              <div className="text-xs text-gray-600 font-medium">配色主题</div>
-            </div>
-            <div className="text-center p-3 bg-white/60 backdrop-blur rounded-xl border border-white/80">
-              <div className="text-2xl font-bold text-pink-600">1080P</div>
-              <div className="text-xs text-gray-600 font-medium">高清导出</div>
-            </div>
-          </div>
-        </div>
+        </header>
 
-        {/* 智能导航栏 - 全新设计 */}
-        <div className="relative mb-12 slide-in">
-          <div className="soft-card p-6 sticky top-4 z-30 backdrop-blur border border-white/80 shadow-2xl">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-bold text-gray-800 mb-1">创作流程</h3>
-              <p className="text-sm text-gray-600">按步骤完成你的封面设计</p>
-            </div>
-            
-            <nav className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              {[
-                { id: 'template', name: '选择模板', icon: '🎨', color: 'emerald', step: '1' },
-                { id: 'editor', name: '编辑文案', icon: '✏️', color: 'blue', step: '2' },
-                { id: 'emoji', name: '添加贴纸', icon: '😊', color: 'yellow', step: '3' },
-                { id: 'color', name: '调整配色', icon: '🌈', color: 'purple', step: '4' },
-                { id: 'preview', name: '预览导出', icon: '👁️', color: 'indigo', step: '5' }
-              ].map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={`relative group flex flex-col items-center gap-2 p-4 rounded-2xl font-medium transition-all duration-300 hover:scale-105 hover:shadow-xl ripple-effect border-2 border-transparent
-                    ${item.color === 'emerald' ? 'text-emerald-700 hover:bg-emerald-50 hover:border-emerald-200' :
-                      item.color === 'blue' ? 'text-blue-700 hover:bg-blue-50 hover:border-blue-200' :
-                      item.color === 'yellow' ? 'text-yellow-700 hover:bg-yellow-50 hover:border-yellow-200' :
-                      item.color === 'purple' ? 'text-purple-700 hover:bg-purple-50 hover:border-purple-200' :
-                      'text-indigo-700 hover:bg-indigo-50 hover:border-indigo-200'}`}
-                >
-                  {/* 步骤编号 */}
-                  <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center text-white shadow-lg
-                    ${item.color === 'emerald' ? 'bg-emerald-500' :
-                      item.color === 'blue' ? 'bg-blue-500' :
-                      item.color === 'yellow' ? 'bg-yellow-500' :
-                      item.color === 'purple' ? 'bg-purple-500' :
-                      'bg-indigo-500'}`}>
-                    {item.step}
-                  </div>
-                  
-                  <span className="text-2xl group-hover:scale-110 transition-transform duration-200">{item.icon}</span>
-                  <span className="text-sm font-bold text-center leading-tight">{item.name}</span>
-                </a>
-              ))}
-            </nav>
-            
-            {/* 进度指示器 */}
-            <div className="mt-6 flex justify-center">
-              <div className="flex items-center gap-2">
-                {[1,2,3,4,5].map((step, index) => (
-                  <React.Fragment key={step}>
-                    <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-                    {index < 4 && <div className="w-8 h-0.5 bg-gray-200"></div>}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        
         {/* 主要内容区域 - 紧凑布局 */}
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,3fr)_minmax(360px,1fr)]">
           <div className="space-y-8">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* 模板选择 */}
-              <section id="template" className="soft-card p-6 scroll-mt-24 hover:shadow-2xl transition-all duration-500 border-l-4 border-emerald-400">
-                <div className="flex items-center justify-between mb-4">
+              <section id="template" className="soft-card p-6 scroll-mt-24 space-y-4">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-xl">🎨</span>
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                      <span className="text-xl">🎨</span>
                     </div>
                     <div>
                       <h2 className="text-xl font-bold text-gray-800">选择模板</h2>
                       <p className="text-xs text-gray-600 mt-1">从精美模板开始设计</p>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
-                    步骤 1/5
-                  </span>
+                  <span className="text-xs text-gray-500">步骤 1/4</span>
                 </div>
                 <TemplatePanel
                   onTemplateSelect={handleTemplateSelect}
@@ -227,20 +124,18 @@ const Index = () => {
               </section>
 
               {/* 配色背景 */}
-              <section id="color" className="soft-card p-6 scroll-mt-24 hover:shadow-2xl transition-all duration-500 border-l-4 border-purple-400">
-                <div className="flex items-center justify-between mb-4">
+              <section id="color" className="soft-card p-6 scroll-mt-24 space-y-4">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-xl">🌈</span>
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                      <span className="text-xl">🌈</span>
                     </div>
                     <div>
                       <h2 className="text-xl font-bold text-gray-800">配色方案</h2>
                       <p className="text-xs text-gray-600 mt-1">选择完美的色彩搭配</p>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-purple-700 bg-purple-100 px-3 py-1 rounded-full border border-purple-200">
-                    步骤 2/5
-                  </span>
+                  <span className="text-xs text-gray-500">步骤 2/4</span>
                 </div>
                 <ColorPanel
                   theme={colorTheme}
@@ -252,20 +147,18 @@ const Index = () => {
             </div>
 
             {/* 文案编辑 */}
-            <section id="editor" className="soft-card p-6 scroll-mt-24 hover:shadow-2xl transition-all duration-500 border-l-4 border-blue-400">
+            <section id="editor" className="soft-card p-6 scroll-mt-24 space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <span className="text-white text-xl">✏️</span>
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <span className="text-xl">✏️</span>
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800">编辑文案</h2>
                     <p className="text-sm text-gray-600 mt-1">打造吸睛标题与正文</p>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-blue-700 bg-blue-100 px-3 py-1 rounded-full border border-blue-200">
-                  步骤 3/5
-                </span>
+                <span className="text-xs text-gray-500">步骤 3/4</span>
               </div>
               <TextEditor
                 content={textContent}
@@ -279,11 +172,11 @@ const Index = () => {
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* 贴纸表情 */}
-              <section id="emoji" className="soft-card p-6 scroll-mt-24 hover:shadow-2xl transition-all duration-500 border-l-4 border-yellow-400">
+              <section id="emoji" className="soft-card p-6 scroll-mt-24 space-y-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-xl">😊</span>
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                      <span className="text-xl">😊</span>
                     </div>
                     <div>
                       <h2 className="text-xl font-bold text-gray-800">添加贴纸</h2>
@@ -291,9 +184,7 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
-                      步骤 4/5
-                    </span>
+                    <span className="text-xs text-gray-500">步骤 4/4</span>
                     <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">可选</span>
                   </div>
                 </div>
@@ -301,10 +192,10 @@ const Index = () => {
               </section>
 
               {/* 操作提示 */}
-              <div className="soft-card p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 scroll-mt-24">
+              <div className="soft-card p-6 scroll-mt-24">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <span className="text-white text-lg">💡</span>
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg">💡</span>
                   </div>
                   <div className="text-sm">
                     <h3 className="font-bold text-gray-800 mb-3">操作小贴士</h3>
@@ -330,25 +221,18 @@ const Index = () => {
 
           {/* 右侧：预览和导出区域 */}
           <div className="space-y-6 xl:sticky xl:top-6 self-start" id="preview">
-            <div className="soft-card p-6 hover:shadow-2xl transition-all duration-500 border-l-4 border-indigo-400">
+            <div className="soft-card p-6 space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <span className="text-white text-xl">👁️</span>
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                    <span className="text-xl">👁️</span>
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800">实时预览</h2>
                     <p className="text-sm text-gray-600 mt-1">所见即所得的设计效果</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full border border-indigo-200">
-                    步骤 5/5
-                  </span>
-                  <span className="text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full animate-pulse border border-emerald-200">
-                    实时更新
-                  </span>
-                </div>
+                <span className="text-xs text-gray-500">实时预览</span>
               </div>
               <PreviewCanvas
                 template={selectedTemplate}
@@ -365,10 +249,10 @@ const Index = () => {
               />
             </div>
 
-            <div className="soft-card p-6 hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200">
+            <div className="soft-card p-6 space-y-4">
               <div className="text-center mb-5">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-xl mx-auto mb-4">
-                  <span className="text-white text-xl">💾</span>
+                <div className="w-14 h-14 rounded-2xl bg-gray-100 text-gray-700 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-xl">💾</span>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-1">导出封面</h2>
                 <p className="text-sm text-gray-600">高清1080P图片，完美适配小红书</p>
@@ -386,12 +270,12 @@ const Index = () => {
                 />
                 
                 <div className="grid grid-cols-2 gap-3 text-center">
-                  <div className="bg-white/80 rounded-xl p-3 border border-green-200">
-                    <div className="text-lg font-bold text-green-600">1080×1440</div>
+                  <div className="rounded-xl border border-gray-200 p-3 bg-gray-50">
+                    <div className="text-lg font-semibold text-gray-800">1080×1440</div>
                     <div className="text-xs text-gray-600">输出尺寸</div>
                   </div>
-                  <div className="bg-white/80 rounded-xl p-3 border border-green-200">
-                    <div className="text-lg font-bold text-green-600">PNG</div>
+                  <div className="rounded-xl border border-gray-200 p-3 bg-gray-50">
+                    <div className="text-lg font-semibold text-gray-800">PNG</div>
                     <div className="text-xs text-gray-600">图片格式</div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Download } from 'lucide-react'
 import { toast } from 'sonner'
+import { BODY_FONT_SCALE, DEFAULT_BODY_FONT_SIZE } from '@/lib/design-tokens.js'
 
 const ExportButton = ({
   template,
@@ -8,7 +9,7 @@ const ExportButton = ({
   colorTheme,
   backgroundColor,
   emojis,
-  bodyFontSize = 52,
+  bodyFontSize = DEFAULT_BODY_FONT_SIZE,
   useGradientText = false,
 }) => {
   // 绘制圆角矩形的辅助函数
@@ -112,7 +113,7 @@ const ExportButton = ({
       // 正文（逐字测量换行 + 胶囊高亮）- 调整位置和大小
       const bodyTop = 420
       const maxWidth = W - padX * 2
-      const fontPx = Math.max(40, Math.round((bodyFontSize || 52) * 3.5))
+      const fontPx = Math.max(40, Math.round((bodyFontSize || DEFAULT_BODY_FONT_SIZE) * BODY_FONT_SCALE))
       const lineH = Math.round(fontPx * 1.5)
       ctx.textAlign = 'left'
       ctx.textBaseline = 'top'
@@ -122,20 +123,29 @@ const ExportButton = ({
       const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
       const tokenize = (text, highlight) => {
-        if (!highlight) return [{ text, highlight: false }]
+        if (!highlight) {
+          return text
+            .split(/(\s+)/)
+            .filter((segment) => segment !== '')
+            .map((segment) => ({
+              text: segment,
+              highlight: false,
+              isSpace: /^\s+$/.test(segment)
+            }))
+        }
         const re = new RegExp(`(${escapeRegExp(highlight)})`, 'gi')
         const parts = text.split(re)
         const out = []
         for (const p of parts) {
           if (p === '') continue
           if (p.toLowerCase() === (highlight || '').toLowerCase()) {
-            out.push({ text: p, highlight: true })
+            out.push({ text: p, highlight: true, isSpace: false })
           } else {
             // 保留空白
             const pieces = p.split(/(\s+)/)
             for (const pc of pieces) {
               if (pc === '') continue
-              out.push({ text: pc, highlight: false })
+              out.push({ text: pc, highlight: false, isSpace: /^\s+$/.test(pc) })
             }
           }
         }
@@ -149,11 +159,34 @@ const ExportButton = ({
       }
 
       const layoutLines = (text, highlight) => {
-        const tokens = tokenize(text, highlight)
+        const splitToken = (token) => {
+          if (!token.text?.trim() || token.isSpace) return [token]
+          const pieces = []
+          let buffer = ''
+          for (const char of Array.from(token.text)) {
+            const nextValue = buffer + char
+            const nextWidth = measureTokenWidth({ ...token, text: nextValue })
+            if (nextWidth > maxWidth && buffer) {
+              pieces.push({ ...token, text: buffer })
+              buffer = char
+            } else if (nextWidth > maxWidth) {
+              pieces.push({ ...token, text: char })
+              buffer = ''
+            } else {
+              buffer = nextValue
+            }
+          }
+          if (buffer) {
+            pieces.push({ ...token, text: buffer })
+          }
+          return pieces.length ? pieces : [token]
+        }
+
+        const tokens = tokenize(text, highlight).flatMap(splitToken)
         const lines = []
         let current = [], width = 0
         for (const t of tokens) {
-          const isSpace = /^\s+$/.test(t.text)
+          const isSpace = t.isSpace
           const tw = measureTokenWidth(t)
           if (width + tw > maxWidth && current.length) {
             lines.push(current)
@@ -362,12 +395,10 @@ const ExportButton = ({
       link.href = canvas.toDataURL('image/png', 0.95)
       link.click()
 
-      toast.dismiss(toastId)
-      toast.success('已开始下载图片')
+      toast.success('已开始下载图片', { id: toastId, duration: 2000 })
     } catch (error) {
       console.error('导出失败:', error)
-      toast.dismiss(toastId)
-      toast.error('导出失败，请重试')
+      toast.error('导出失败，请重试', { id: toastId })
     }
   }
 

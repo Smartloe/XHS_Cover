@@ -236,6 +236,26 @@ npx update-browserslist-db@latest
   - 项目已设置跨域图片策略；若网络异常导致加载失败，导出仍会继续
   - 建议尽量使用可跨域访问的图片源
 
+## GitHub Pages 部署指南
+1. 安装 `gh-pages`（一次性）  
+   ```bash
+   npm install --save-dev gh-pages
+   ```
+2. 在 `package.json` 里新增脚本：  
+   ```json
+   {
+     "scripts": {
+       "deploy": "gh-pages -d build"
+     }
+   }
+   ```
+3. 构建并推送静态文件：  
+   ```bash
+   npm run build
+   npm run deploy
+   ```
+4. GitHub 仓库中开启 Pages，分支选择 `gh-pages` 即可。
+
 ## 版本约束
 - Node 版本：见 [.nvmrc](.nvmrc:1) 与 [package.json.engines](package.json:6)
 - Vite 5 要求 Node ≥ 18，请勿使用 Node 16
